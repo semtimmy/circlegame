@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://diqjuveu15sj"]
+
+[ext_resource type="Script" uid="uid://b6cfffuwv8do" path="res://spring.gd" id="1_boyml"]
+[ext_resource type="Texture2D" uid="uid://dn8im4pcxkeep" path="res://icon.svg" id="1_ka4py"]
+[ext_resource type="Texture2D" uid="uid://mtvju56bthb" path="res://spring.png" id="3_hpppm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l2xdd"]
+size = Vector2(40, 37.5)
+
+[node name="Spring" type="Node2D"]
+script = ExtResource("1_boyml")
+
+[node name="Icon" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(1, 0.05490196, 0.003921569, 1)
+position = Vector2(0, 19.250002)
+scale = Vector2(0.28125, 0.30859372)
+texture = ExtResource("1_ka4py")
+
+[node name="StaticBody2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 18.25)
+shape = SubResource("RectangleShape2D_l2xdd")
+
+[node name="Spring" type="Sprite2D" parent="."]
+position = Vector2(0, 15.000002)
+rotation = -3.1415927
+scale = Vector2(0.11512471, 0.11512472)
+texture = ExtResource("3_hpppm")
+
+[connection signal="body_entered" from="StaticBody2D" to="." method="_on_static_body_2d_body_entered"]

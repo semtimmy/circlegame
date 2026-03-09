@@ -1,0 +1,101 @@
+[gd_scene load_steps=10 format=3 uid="uid://3umkbyi2li07"]
+
+[ext_resource type="Texture2D" uid="uid://pj6u8pxuk3g0" path="res://Untitled.png" id="1_j2q8x"]
+[ext_resource type="Script" uid="uid://dfv4vo3tvcnx2" path="res://root.gd" id="1_qn3nj"]
+[ext_resource type="PackedScene" uid="uid://ck20f1vpyin38" path="res://player.tscn" id="2_112p8"]
+[ext_resource type="Script" uid="uid://pqggplm6ktni" path="res://spawner.gd" id="3_112p8"]
+[ext_resource type="PackedScene" uid="uid://dhxeoxjn0r6fq" path="res://cactus.tscn" id="4_e2u21"]
+[ext_resource type="PackedScene" uid="uid://diqjuveu15sj" path="res://spring.tscn" id="5_bss38"]
+[ext_resource type="Script" uid="uid://ct2aifr7wifvb" path="res://score.gd" id="6_tda05"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_bss38"]
+font_size = 60
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_qn3nj"]
+font_size = 45
+font_color = Color(1, 1, 0.5882353, 1)
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Node" type="Node"]
+script = ExtResource("1_qn3nj")
+speed = 1000.0
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="Circle" type="Sprite2D" parent="World"]
+modulate = Color(1, 0.5294118, 0.5529412, 1)
+z_index = 1
+position = Vector2(360, 360)
+texture = ExtResource("1_j2q8x")
+
+[node name="Player" parent="World" instance=ExtResource("2_112p8")]
+position = Vector2(360, 585)
+
+[node name="Floor" type="Line2D" parent="World"]
+visible = false
+position = Vector2(-13.000998, 678)
+scale = Vector2(0.999002, 3)
+points = PackedVector2Array(0, 0, 1000, 0)
+width = 1.0
+
+[node name="Spawner" type="Node2D" parent="World"]
+script = ExtResource("3_112p8")
+spawnables = Array[PackedScene]([ExtResource("4_e2u21"), ExtResource("5_bss38")])
+
+[node name="SpawnTimer" type="Timer" parent="World/Spawner"]
+wait_time = 0.6
+autostart = true
+
+[node name="RemoveStartTimer" type="Timer" parent="World/Spawner"]
+wait_time = 15.0
+autostart = true
+
+[node name="RemoveTimer" type="Timer" parent="World/Spawner"]
+wait_time = 1.5999999999999999
+
+[node name="Pivot" type="Node2D" parent="World/Spawner"]
+position = Vector2(360, 360)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_tda05")
+start_color = Color(1, 1, 0.59608823, 1)
+end_color = Color(0.7897518, 0.20216748, 4.813075e-07, 1)
+
+[node name="Score" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0"
+label_settings = SubResource("LabelSettings_bss38")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PotentialScore" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -51.0
+offset_bottom = -51.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0"
+label_settings = SubResource("LabelSettings_qn3nj")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="timeout" from="World/Spawner/SpawnTimer" to="World/Spawner" method="_on_timer_timeout"]
+[connection signal="timeout" from="World/Spawner/RemoveStartTimer" to="World/Spawner" method="_on_remove_start_timer_timeout"]
+[connection signal="timeout" from="World/Spawner/RemoveTimer" to="World/Spawner" method="_on_remove_timer_timeout"]
