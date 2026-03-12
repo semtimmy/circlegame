@@ -14,6 +14,7 @@ var rot_speed : float = 1.0
 
 var obstacles : Array = []
 var slots : Dictionary = {}
+var slot_types : Dictionary = {}  # slot -> spawnable index
 
 @export var repetition_penalty : float = 0.25
 var spawn_streak : Dictionary = {}  # spawnable index -> consecutive spawn count
@@ -74,15 +75,14 @@ func spawn_obstacle():
 		var angle = slot * interval
 
 		# same type clause
-		var type = obstacle.get_class()
-		if slots.get(slot + 1) and slots.get(slot + 1).is_class(type):
-			if slots.get(slot + 2) and slots.get(slot + 2).is_class(type):
+		if slot_types.get(slot + 1) == chosen_index:
+			if slot_types.get(slot + 2) == chosen_index:
 				continue
-		if slots.get(slot + 1) and slots.get(slot + 1).is_class(type):
-			if slots.get(slot - 1) and slots.get(slot - 1).is_class(type):
+		if slot_types.get(slot + 1) == chosen_index:
+			if slot_types.get(slot - 1) == chosen_index:
 				continue
-		if slots.get(slot - 1) and slots.get(slot - 1).is_class(type):
-			if slots.get(slot - 2) and slots.get(slot - 2).is_class(type):
+		if slot_types.get(slot - 1) == chosen_index:
+			if slot_types.get(slot - 2) == chosen_index:
 				continue
 
 		# Update repetition streaks
@@ -102,6 +102,7 @@ func spawn_obstacle():
 		obstacle.score.connect(on_score)
 		obstacles.append(obstacle)
 		slots[slot] = obstacle
+		slot_types[slot] = chosen_index
 		return
 
 
@@ -133,3 +134,4 @@ func _on_remove_timer_timeout() -> void:
 	var slot = top_half_occupied.pick_random()
 	pivot.remove_child(slots[slot])
 	slots.erase(slot)
+	slot_types.erase(slot)
