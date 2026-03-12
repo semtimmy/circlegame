@@ -3,6 +3,7 @@ extends Control
 @onready var root = $".."
 @onready var score = $Score
 @onready var potscore = $PotentialScore
+@onready var highscore_label = $Highscore
 
 var potscore_base_pos : Vector2
 var potscore_base_size : float
@@ -19,6 +20,11 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	score.text = str(floor(root.score))
 	potscore.text = str(floor(root.potscore))
+	if HighscoreManager.highscore > 0:
+		highscore_label.text = "HI: " + str(floor(HighscoreManager.highscore))
+		highscore_label.visible = true
+	else:
+		highscore_label.visible = false
 
 	var t = clampf(root.potscore / max_potscore, 0.0, 1.0)
 

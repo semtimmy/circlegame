@@ -6,6 +6,8 @@ func setup(s: float) -> void:
 	_final_score = s
 
 func _ready() -> void:
+	var is_new_highscore = HighscoreManager.check_and_update(_final_score)
+
 	# Semi-transparent dark background
 	var bg = ColorRect.new()
 	bg.color = Color(0, 0, 0, 0.65)
@@ -34,6 +36,21 @@ func _ready() -> void:
 	score_label.add_theme_font_size_override("font_size", 44)
 	score_label.add_theme_color_override("font_color", Color.WHITE)
 	vbox.add_child(score_label)
+
+	if is_new_highscore:
+		var new_hs_label = Label.new()
+		new_hs_label.text = "NEW HIGHSCORE!"
+		new_hs_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		new_hs_label.add_theme_font_size_override("font_size", 36)
+		new_hs_label.add_theme_color_override("font_color", Color.GOLD)
+		vbox.add_child(new_hs_label)
+	else:
+		var hs_label = Label.new()
+		hs_label.text = "Highscore: " + str(floor(HighscoreManager.highscore))
+		hs_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		hs_label.add_theme_font_size_override("font_size", 32)
+		hs_label.add_theme_color_override("font_color", Color(0.9, 0.85, 0.3))
+		vbox.add_child(hs_label)
 
 	var hint = Label.new()
 	hint.text = "Tap or press [Space] to restart"
