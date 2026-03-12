@@ -42,14 +42,15 @@ circlegame/
 
 ## How to Build & Run
 
+This project runs on a headless server with no display driver. All Godot commands must use `--headless`.
+
 | Task | Command |
 |------|---------|
-| Open in editor | `godot --editor` (from this directory) |
-| Play | F5 in editor (runs `node.tscn`) |
+| Validate scripts | `godot --headless --quit 2>&1` |
 | Export Web | `godot --headless --export-release "Web" build/index.html` |
 | Export Windows | `godot --headless --export-release "Windows Desktop" export/1shot.exe` |
 
-CI automatically builds and deploys the web export on push to `master`.
+You cannot open the editor or play the game — there is no GUI. CI automatically builds and deploys the web export on push to `master`.
 
 ## Conventions
 
