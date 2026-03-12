@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://3umkbyi2li07"]
+[gd_scene load_steps=12 format=3 uid="uid://3umkbyi2li07"]
 
 [ext_resource type="Texture2D" uid="uid://pj6u8pxuk3g0" path="res://Untitled.png" id="1_j2q8x"]
 [ext_resource type="Script" uid="uid://dfv4vo3tvcnx2" path="res://root.gd" id="1_qn3nj"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dhxeoxjn0r6fq" path="res://cactus.tscn" id="4_e2u21"]
 [ext_resource type="PackedScene" uid="uid://diqjuveu15sj" path="res://spring.tscn" id="5_bss38"]
 [ext_resource type="Script" uid="uid://ct2aifr7wifvb" path="res://score.gd" id="6_tda05"]
+[ext_resource type="Shader" uid="uid://b3vxwte8hp5bk" path="res://background.gdshader" id="8_l6pdb"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bss38"]
 font_size = 60
@@ -19,6 +20,15 @@ font_color = Color(1, 1, 0.5882353, 1)
 outline_size = 5
 outline_color = Color(0, 0, 0, 1)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l6pdb"]
+shader = ExtResource("8_l6pdb")
+shader_parameter/color_primary = Color(0.089624144, 0.10861275, 0.00083920173, 1)
+shader_parameter/color_secondary = Color(0.43764618, 0.36859223, 0.15513569, 1)
+shader_parameter/color_accent = Color(0.52073777, 0.44055146, 0.43746665, 1)
+shader_parameter/swirl_offset = 0.0
+shader_parameter/swirl_intensity = 16.30000024288956
+shader_parameter/swirl_arms = 2
+
 [node name="Node" type="Node"]
 script = ExtResource("1_qn3nj")
 speed = 1000.0
@@ -26,7 +36,7 @@ speed = 1000.0
 [node name="World" type="Node2D" parent="."]
 
 [node name="Circle" type="Sprite2D" parent="World"]
-modulate = Color(1, 0.5294118, 0.5529412, 1)
+modulate = Color(1, 0.72849286, 0.732038, 0.12156863)
 z_index = 1
 position = Vector2(360, 360)
 texture = ExtResource("1_j2q8x")
@@ -46,7 +56,7 @@ script = ExtResource("3_112p8")
 spawnables = Array[PackedScene]([ExtResource("4_e2u21"), ExtResource("5_bss38")])
 
 [node name="SpawnTimer" type="Timer" parent="World/Spawner"]
-wait_time = 0.6
+wait_time = 0.5
 autostart = true
 
 [node name="RemoveStartTimer" type="Timer" parent="World/Spawner"]
@@ -54,7 +64,7 @@ wait_time = 15.0
 autostart = true
 
 [node name="RemoveTimer" type="Timer" parent="World/Spawner"]
-wait_time = 1.5999999999999999
+wait_time = 1.6999999999999997
 
 [node name="Pivot" type="Node2D" parent="World/Spawner"]
 position = Vector2(360, 360)
@@ -95,6 +105,15 @@ text = "0"
 label_settings = SubResource("LabelSettings_qn3nj")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = -5
+material = SubResource("ShaderMaterial_l6pdb")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [connection signal="timeout" from="World/Spawner/SpawnTimer" to="World/Spawner" method="_on_timer_timeout"]
 [connection signal="timeout" from="World/Spawner/RemoveStartTimer" to="World/Spawner" method="_on_remove_start_timer_timeout"]

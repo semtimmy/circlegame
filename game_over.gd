@@ -36,13 +36,13 @@ func _ready() -> void:
 	vbox.add_child(score_label)
 
 	var hint = Label.new()
-	hint.text = "Press [Space] to restart"
+	hint.text = "Tap or press [Space] to restart"
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	hint.add_theme_font_size_override("font_size", 24)
 	hint.add_theme_color_override("font_color", Color(0.75, 0.75, 0.75))
 	vbox.add_child(hint)
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_accept"):
+	if event.is_action_pressed("ui_accept") or (event is InputEventScreenTouch and event.pressed):
 		queue_free()
 		get_tree().reload_current_scene()

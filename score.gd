@@ -12,6 +12,7 @@ var max_potscore : float = 1000.0
 @export var end_color : Color
 
 func _ready() -> void:
+	potscore.label_settings.font_size = 45
 	potscore_base_pos = potscore.position
 	potscore_base_size = potscore.label_settings.font_size
 

@@ -17,6 +17,20 @@ var col_size_up = 20.0
 signal on_floor
 signal killed
 
+var _touch_held := false
+var _touch_just_pressed := false
+
+func _consume_touch() -> bool:
+	return _touch_held
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventScreenTouch:
+		if event.pressed:
+			_touch_held = true
+			_touch_just_pressed = true
+		else:
+			_touch_held = false
+
 func kill():
 	get_parent().remove_child(self)
 	killed.emit()
@@ -35,13 +49,21 @@ func _process(delta: float) -> void:
 		on_floor.emit()
 
 	# Jump logic
-	if Input.is_action_pressed("ui_accept") and is_on_floor:
+	var tap = Input.is_action_pressed("ui_accept") or _consume_touch()
+	var tap_just = Input.is_action_just_pressed("ui_accept") or _touch_just_pressed
+
+	if tap and is_on_floor:
 		velocity = -jump_vel
 		is_on_floor = false
-	
+
 	# Slam logic
-	if Input.is_action_just_pressed("ui_down"):
+	if tap_just and not is_on_floor:
 		velocity = slam_vel
+
+	if Input.is_action_just_pressed("ui_down") and not is_on_floor:
+		velocity = slam_vel
+
+	_touch_just_pressed = false
 
 	# Apply the velocity to the position
 	position.y += velocity * delta
