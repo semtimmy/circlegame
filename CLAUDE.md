@@ -58,3 +58,15 @@ CI automatically builds and deploys the web export on push to `master`.
 - Window is 720x720 (1:1 aspect ratio).
 - All game logic runs in GDScript `_process()` and `_physics_process()` callbacks.
 - Floor is at Y=678 in world space.
+
+## Debugging
+
+To check for GDScript parse errors and runtime errors, run:
+
+```bash
+godot --headless --quit 2>&1
+```
+
+This launches the project headlessly and immediately quits, printing any script errors to stdout/stderr. Use this after making changes to validate scripts before committing.
+
+**Note:** A single parse error (e.g., in `root.gd`) can cause cascading runtime errors in other scripts that depend on the broken script's properties. Always fix the earliest reported error first.
