@@ -127,6 +127,22 @@ label_settings = SubResource("LabelSettings_hs")
 horizontal_alignment = 2
 visible = false
 
+[node name="FXToggle" type="Button" parent="Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -50.0
+offset_top = 45.0
+offset_right = -10.0
+offset_bottom = 75.0
+grow_horizontal = 0
+text = "FX"
+toggle_mode = true
+button_pressed = true
+flat = true
+modulate = Color(1, 1, 1, 0.5)
+
 [node name="ColorRect" type="ColorRect" parent="."]
 z_index = -5
 material = SubResource("ShaderMaterial_l6pdb")
@@ -139,3 +155,4 @@ grow_vertical = 2
 [connection signal="timeout" from="World/Spawner/SpawnTimer" to="World/Spawner" method="_on_timer_timeout"]
 [connection signal="timeout" from="World/Spawner/RemoveStartTimer" to="World/Spawner" method="_on_remove_start_timer_timeout"]
 [connection signal="timeout" from="World/Spawner/RemoveTimer" to="World/Spawner" method="_on_remove_timer_timeout"]
+[connection signal="toggled" from="Control/FXToggle" to="." method="_on_fx_toggle"]

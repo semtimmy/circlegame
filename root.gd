@@ -24,6 +24,7 @@ var time_intensity : float = 1000
 
 var time_elapsed : float = 0
 var swirl_offset : float = 0.0
+var shader_enabled : bool = true
 
 func _ready() -> void:
 	spawner.score.connect(add_score)
@@ -48,6 +49,8 @@ func _process(delta: float) -> void:
 	time_elapsed += delta
 
 	# --- Background shader control ---
+	if not shader_enabled:
+		return
 	# Accumulate swirl offset so speed changes are smooth
 	var base_swirl_speed := 0.5
 	var max_swirl_speed := 25.0
@@ -73,6 +76,10 @@ func _process(delta: float) -> void:
 	var accent_vibrant := Color(1.0, 1.0, 1.0, 1.0)
 	var vibrance_t := clampf((exp(potscore / 2500.0) - 1.0) / (exp(1.0) - 1.0), 0.0, 1.0)
 	bg_material.set_shader_parameter("color_accent", accent_base.lerp(accent_vibrant, vibrance_t))
+
+func _on_fx_toggle(toggled_on: bool) -> void:
+	shader_enabled = toggled_on
+	$ColorRect.visible = toggled_on
 
 func end_game():
 	process_mode = Node.PROCESS_MODE_DISABLED
